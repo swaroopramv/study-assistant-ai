@@ -240,6 +240,37 @@ print(summarize_notes())
 
 ---
 
+## 💡 Technical Highlights & What I Learned
+
+Building this project deepened my understanding of modern AI engineering:
+
+- **Retrieval-Augmented Generation (RAG)** — designed the full pipeline:
+  document loading → chunking → embeddings → vector retrieval → grounded
+  generation, and learned how retrieval reduces hallucinations by constraining
+  the model to provided context.
+- **Local LLM deployment** — integrated [Ollama](https://ollama.com) to run
+  `ministral-3:8b` entirely on-device, removing cloud cost, API keys, and
+  privacy concerns. Discovered that chat and embedding responsibilities need
+  *separate* models (`nomic-embed-text` for embeddings).
+- **Vector search** — used **FAISS** for fast similarity search and persisted
+  the index to disk to avoid re-embedding on every run.
+- **LangChain orchestration** — composed a clean, declarative chain with the
+  LCEL pipe syntax (`retriever | prompt | llm | parser`).
+- **Prompt engineering** — wrote a constrained prompt that instructs the model
+  to answer *only* from context and admit when it doesn't know.
+- **Production practices** — added an **offline unit-test suite**, **ruff**
+  linting/formatting, and a **GitHub Actions CI** pipeline so quality is
+  enforced automatically.
+- **Privacy-by-design** — kept all data local and ensured no secrets or
+  personal paths are ever committed or displayed.
+
+### Possible next steps
+This project is a foundation that could be extended with source citations,
+response streaming, conversation memory, and a multi-agent workflow
+(e.g. a researcher → writer → reviewer crew, as described in the sample notes).
+
+---
+
 ## 🩺 Troubleshooting
 
 | Problem | Fix |
