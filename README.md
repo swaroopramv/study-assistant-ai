@@ -14,6 +14,10 @@
   <img alt="License" src="https://img.shields.io/badge/License-MIT-green">
 </p>
 
+<p align="center">
+  <i>If you find this project useful, please consider giving it a ⭐ — it helps others discover it!</i>
+</p>
+
 ---
 
 ## ✨ Features
@@ -33,6 +37,14 @@
 
 ## 🖼️ Demo
 
+<!-- Add a screenshot of the running app here. Save it as docs/demo.png and
+     it will render automatically. -->
+<p align="center">
+  <img src="docs/demo.png" alt="Study Assistant AI screenshot" width="800">
+</p>
+
+Example interaction:
+
 ```text
 You:  What is agent orchestration and when do we need a multi-agent system?
 
@@ -43,8 +55,8 @@ You:  What is agent orchestration and when do we need a multi-agent system?
       needs different specialised skills, or benefits from checks and balances.
 ```
 
-> _Tip: add a screenshot or GIF here (e.g. `docs/demo.png`) once you run the app
-> so visitors can see the UI._
+> _No screenshot yet? Run the app, take a screenshot of the browser, save it as
+> `docs/demo.png`, and it will appear above automatically._
 
 ---
 
