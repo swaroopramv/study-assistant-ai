@@ -5,7 +5,7 @@ Run with: streamlit run app.py
 
 from __future__ import annotations
 
-import os
+from pathlib import Path
 
 import streamlit as st
 from dotenv import load_dotenv
@@ -48,7 +48,11 @@ with st.sidebar:
 
     st.markdown(f"**LLM:** `{CHAT_MODEL}` (Ollama)")
     st.markdown(f"**Ollama URL:** `{OLLAMA_BASE_URL}`")
-    st.markdown(f"**Notes folder:** `{DATA_DIR}`")
+    try:
+        notes_display = DATA_DIR.relative_to(Path.cwd())
+    except ValueError:
+        notes_display = DATA_DIR.name
+    st.markdown(f"**Notes folder:** `{notes_display}`")
 
     uploaded = st.file_uploader(
         "Add study material", type=["txt", "md", "pdf"], accept_multiple_files=True
