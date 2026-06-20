@@ -6,6 +6,7 @@
 > leave your laptop.
 
 <p align="center">
+  <a href="https://github.com/swaroopramv/study-assistant-ai/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/swaroopramv/study-assistant-ai/actions/workflows/ci.yml/badge.svg"></a>
   <img alt="Python" src="https://img.shields.io/badge/Python-3.9%2B-blue?logo=python&logoColor=white">
   <img alt="LangChain" src="https://img.shields.io/badge/LangChain-RAG-1C3C3C?logo=langchain&logoColor=white">
   <img alt="Ollama" src="https://img.shields.io/badge/LLM-Ollama-black?logo=ollama&logoColor=white">
@@ -109,11 +110,19 @@ You:  What is agent orchestration and when do we need a multi-agent system?
 ```text
 study-assistant-ai/
 ├── README.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── pyproject.toml          # ruff + pytest config
 ├── requirements.txt
 ├── .env.example            # configuration template
+├── .github/workflows/ci.yml  # GitHub Actions CI (lint + tests)
 ├── app.py                  # Streamlit web UI
 ├── data/
 │   └── notes.txt           # your study material
+├── scripts/
+│   └── capture_demo.py     # screenshot helper for the README
+├── tests/
+│   └── test_rag_helper.py  # offline unit tests
 └── utils/
     ├── __init__.py
     └── rag_helper.py        # loading, indexing, QA & summary chains
@@ -194,6 +203,24 @@ Open the URL shown in the terminal (usually <http://localhost:8501>), click
 4. **Retrieve** — for each question, the top-k most relevant chunks are fetched.
 5. **Generate** — the chunks + your question are sent to the local LLM, which
    returns an answer grounded only in your notes.
+
+---
+
+## 🧪 Testing & Code Quality
+
+The project ships with an offline unit-test suite (no Ollama server required)
+and is linted/formatted with [ruff](https://docs.astral.sh/ruff/).
+
+```bash
+pip install ruff pytest
+ruff check .        # lint
+ruff format .       # auto-format
+pytest              # run tests
+```
+
+Every push and pull request is automatically validated by
+**GitHub Actions** (lint + tests on Python 3.9 and 3.11) — see the CI badge at
+the top.
 
 ---
 

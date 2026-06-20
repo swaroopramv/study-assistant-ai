@@ -8,16 +8,15 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import List
 
 from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
+from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 
 load_dotenv()
@@ -54,9 +53,9 @@ def _get_llm(temperature: float = 0.2) -> ChatOllama:
     )
 
 
-def load_documents(data_dir: Path = DATA_DIR) -> List[Document]:
+def load_documents(data_dir: Path = DATA_DIR) -> list[Document]:
     """Load all .txt, .md, and .pdf files from the data directory."""
-    docs: List[Document] = []
+    docs: list[Document] = []
     if not data_dir.exists():
         return docs
     for path in data_dir.rglob("*"):
@@ -67,7 +66,7 @@ def load_documents(data_dir: Path = DATA_DIR) -> List[Document]:
     return docs
 
 
-def split_documents(docs: List[Document]) -> List[Document]:
+def split_documents(docs: list[Document]) -> list[Document]:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000, chunk_overlap=150, separators=["\n\n", "\n", ". ", " ", ""]
     )
@@ -100,7 +99,7 @@ def load_vectorstore() -> FAISS:
     return build_vectorstore()
 
 
-def _format_docs(docs: List[Document]) -> str:
+def _format_docs(docs: list[Document]) -> str:
     return "\n\n".join(d.page_content for d in docs)
 
 

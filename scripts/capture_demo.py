@@ -37,9 +37,7 @@ def main() -> None:
 
         # Wait for the local LLM to generate the answer (can take a while).
         try:
-            page.wait_for_selector(
-                'div[data-testid="stChatMessage"]', timeout=120000
-            )
+            page.wait_for_selector('div[data-testid="stChatMessage"]', timeout=120000)
         except Exception:  # noqa: BLE001
             pass
         # Give the model time to finish streaming the full answer.
