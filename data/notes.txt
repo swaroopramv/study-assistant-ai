@@ -1,0 +1,237 @@
+=====================================================================
+AI AGENTS - STUDY NOTES
+=====================================================================
+
+1. WHAT IS ARTIFICIAL INTELLIGENCE (AI)?
+---------------------------------------------------------------------
+Artificial Intelligence is the field of building systems that can
+perform tasks that normally require human intelligence, such as
+understanding language, recognising images, reasoning, planning, and
+making decisions.
+
+Key sub-areas:
+- Machine Learning (ML): systems that learn patterns from data.
+- Deep Learning: ML using multi-layer neural networks.
+- Natural Language Processing (NLP): understanding and generating
+  human language.
+- Large Language Models (LLMs): very large neural networks (e.g. GPT,
+  Llama, Mistral) trained to predict text and capable of reasoning,
+  summarising, and answering questions.
+
+
+2. WHAT IS AN AI AGENT?
+---------------------------------------------------------------------
+An AI agent is a software system that can perceive its environment,
+make decisions, and take actions to achieve a goal - with some degree
+of autonomy. Unlike a plain chatbot that only answers one message at a
+time, an agent can plan multiple steps, use tools, and act on its own
+until the goal is reached.
+
+Simple definition:
+"An agent = a brain (LLM) + memory + tools + a loop that decides what
+to do next."
+
+Core components of an agent:
+- Perception / Input: reads the user request and any data from the
+  environment (files, APIs, search results).
+- Brain / Reasoning (the LLM): decides what to do, breaks the goal
+  into steps, and chooses actions.
+- Memory: short-term (current conversation) and long-term (stored
+  facts, past results, vector databases).
+- Tools / Actions: things the agent can use, such as web search, a
+  calculator, code execution, or database queries.
+- Goal / Objective: what the agent is trying to accomplish.
+
+
+3. HOW DOES AN AGENT WORK? (THE AGENT LOOP)
+---------------------------------------------------------------------
+An agent works in a repeating cycle, often called the
+"Think -> Act -> Observe" loop:
+
+  1. THINK (Reason):   The LLM looks at the goal and current state and
+                       decides the next step.
+  2. ACT (Use a tool): The agent calls a tool or performs an action
+                       (e.g. search the web, run code).
+  3. OBSERVE (Result): The agent reads the result of the action.
+  4. REPEAT:           It loops again until the goal is achieved, then
+                       gives the final answer.
+
+A popular pattern for this is ReAct (Reasoning + Acting), where the
+model alternates between writing its reasoning and choosing actions.
+
+Example:
+Goal: "What is the population of France times 2?"
+- Think: I need the population of France -> use search tool.
+- Act: search("population of France")
+- Observe: ~68 million.
+- Think: Now multiply by 2 -> use calculator tool.
+- Act: calculate(68,000,000 x 2)
+- Observe: 136,000,000.
+- Final answer: about 136 million.
+
+
+4. TYPES OF AGENTS
+---------------------------------------------------------------------
+- Reactive agents: respond directly to input with no long-term plan.
+- Deliberative / planning agents: build a plan of steps before acting.
+- Tool-using agents: can call external tools and APIs.
+- Autonomous agents: run many steps on their own with little human
+  input (e.g. AutoGPT-style agents).
+- RAG agents: retrieve relevant documents from a knowledge base before
+  answering (Retrieval-Augmented Generation) - exactly what this Study
+  Assistant project uses.
+
+
+5. WHAT IS A MULTI-AGENT SYSTEM?
+---------------------------------------------------------------------
+A multi-agent system (MAS) is when several agents work together, each
+with its own role, and they communicate to solve a larger problem -
+similar to a team of specialists instead of one generalist.
+
+Why use multiple agents instead of one?
+- Specialisation: each agent is an expert at one job (e.g. a
+  "Researcher" agent, a "Writer" agent, a "Reviewer" agent).
+- Better quality: agents can check and critique each other's work.
+- Parallelism: different agents can work at the same time.
+- Modularity: easier to build, test, and reuse each agent.
+
+When do we NEED multi-agent systems?
+- The task is too big or complex for a single prompt/agent.
+- The task has distinct stages needing different skills
+  (research -> code -> test -> review).
+- You want checks and balances (one agent reviews another).
+- You need parallel work on independent sub-tasks.
+
+When a single agent is enough:
+- Simple, short tasks (one question, one tool, quick answer).
+- When extra agents only add cost and latency without benefit.
+
+Common multi-agent patterns:
+- Supervisor / Orchestrator: a manager agent assigns sub-tasks to
+  worker agents and combines their results.
+- Hierarchical: agents arranged in layers (manager -> sub-managers
+  -> workers).
+- Collaborative / Debate: agents discuss or critique to reach a better
+  answer.
+- Pipeline / Sequential: output of one agent becomes the input of the
+  next.
+
+
+6. WHAT IS AGENT ORCHESTRATION?
+---------------------------------------------------------------------
+Agent orchestration is the coordination layer that manages how one or
+more agents and their tools work together - deciding the order of
+steps, passing information between agents, handling errors, and
+controlling the overall workflow.
+
+Think of the orchestrator as the "conductor of an orchestra": the
+individual agents are the musicians, and the orchestrator makes sure
+they play in the right order and in harmony.
+
+What orchestration handles:
+- Routing: deciding which agent or tool should handle a request.
+- State & memory: keeping track of progress and sharing context
+  between agents.
+- Sequencing: running steps in the right order (sequential, parallel,
+  or conditional/branching).
+- Error handling & retries: recovering when a step fails.
+- Stopping conditions: knowing when the goal is done (so it does not
+  loop forever).
+
+Popular orchestration frameworks:
+- LangChain / LangGraph: build chains and graph-based agent workflows.
+- CrewAI: define a "crew" of role-based agents that collaborate.
+- AutoGen: multi-agent conversations between LLM agents.
+- LlamaIndex: data and RAG-focused agent workflows.
+
+
+7. KEY TAKEAWAYS (QUICK REVISION)
+---------------------------------------------------------------------
+- An AI agent = LLM brain + memory + tools + a decision loop.
+- Agents work in a Think -> Act -> Observe loop until the goal is met.
+- A single agent suits simple tasks; multi-agent systems suit complex,
+  multi-stage, or specialised tasks.
+- Multi-agent = a team of specialised agents that communicate.
+- Orchestration is the "conductor" that coordinates agents, tools,
+  data, and the order of steps.
+- This Study Assistant is a RAG agent: it retrieves your notes, then
+  the LLM answers using them.
+
+
+=====================================================================
+WORKED EXAMPLE: A MULTI-AGENT WORKFLOW (RESEARCH -> WRITE -> REVIEW)
+=====================================================================
+Goal: "Write a short, accurate blog post about AI agents."
+
+The crew (each agent has one job):
+- Orchestrator (Supervisor): plans the steps and passes work between
+  agents; decides when the goal is done.
+- Researcher Agent: gathers facts using a web-search tool.
+- Writer Agent: turns the research into a clear draft.
+- Reviewer Agent: checks the draft for accuracy and clarity, and
+  either approves it or sends feedback back to the Writer.
+
+Workflow diagram:
+
+        +-----------------+
+        |   User Goal     |
+        +--------+--------+
+                 |
+                 v
+        +-----------------+
+        |  Orchestrator   |  <-------------------+
+        | (Supervisor)    |                      |
+        +--------+--------+                       |
+                 |                                |
+     (1) research|                                |
+                 v                                |
+        +-----------------+                       |
+        | Researcher Agent|  --uses--> [search]   |
+        +--------+--------+                        |
+                 | facts                           |
+                 v                                 |
+        +-----------------+                        |
+        |  Writer Agent   |  --> draft             |
+        +--------+--------+                         |
+                 | draft                            |
+                 v                                  |
+        +-----------------+    feedback (revise)    |
+        | Reviewer Agent  | ------------------------+
+        +--------+--------+
+                 | approved
+                 v
+        +-----------------+
+        |  Final Output   |
+        +-----------------+
+
+Step-by-step (Think -> Act -> Observe at the crew level):
+  1. Orchestrator: plan = research -> write -> review.
+  2. Researcher: search("what is an AI agent") -> returns key facts.
+  3. Orchestrator: passes facts to the Writer.
+  4. Writer: produces a first draft from the facts.
+  5. Reviewer: checks the draft.
+       - If issues found -> sends feedback, Writer revises (loop).
+       - If good -> approves.
+  6. Orchestrator: stopping condition met -> returns final post.
+
+Why this is better than one agent:
+- Each agent specialises in one skill (research, writing, reviewing).
+- The Reviewer provides checks and balances (quality control).
+- The loop between Writer and Reviewer improves accuracy.
+
+In code, this maps to a framework like CrewAI or LangGraph:
+- Define each agent with a role + the tools it can use.
+- The orchestrator/graph defines the order and the revise loop.
+- A stopping condition ends the loop (e.g. Reviewer approves, or a
+  maximum number of revisions is reached).
+
+
+=====================================================================
+EXAMPLE EXAM-STYLE QUESTIONS
+=====================================================================
+Q1. Define an AI agent and list its core components.
+Q2. Explain the Think-Act-Observe loop with an example.
+Q3. Give two situations where a multi-agent system is better than a
+    single agent.
+Q4. What does an orchestrator do in a multi-agent system?
+Q5. What is RAG and how is it used in an agent?
